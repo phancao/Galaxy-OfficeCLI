@@ -26,7 +26,10 @@ System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = System.Globaliz
 // Internal commands (spawned as separate processes, not user-facing)
 if (args.Length == 1 && args[0] == "__update-check__")
 {
-    OfficeCli.Core.UpdateChecker.RunRefresh();
+    // GALAXY FORK: the self-update worker is disabled — this fork's binary
+    // would otherwise be clobbered by an upstream release. Rebuild and
+    // redeploy through the Galaxy pipeline instead.
+    Console.Error.WriteLine("officecli (Galaxy fork): self-update is disabled; deploy via the Galaxy CI/compose pipeline.");
     return 0;
 }
 
@@ -211,13 +214,11 @@ if (args.Length >= 2 && args[0] == "config")
 // Log command
 OfficeCli.Core.CliLogger.LogCommand(args);
 
-// Auto-install: if running outside ~/.local/bin/officecli, copy self there.
-// Fresh install → full Run() (binary + skills + MCP). Upgrade → binary only.
-OfficeCli.Core.Installer.MaybeAutoInstall(args);
-
-// Non-blocking update check: spawns background upgrade if stale
-if (Environment.GetEnvironmentVariable("OFFICECLI_SKIP_UPDATE") != "1")
-    OfficeCli.Core.UpdateChecker.CheckInBackground();
+// GALAXY FORK: auto-install and background self-update are removed.
+// This binary is built, pinned, and deployed exclusively through the
+// Galaxy CI/compose pipeline; it must never copy itself around or pull
+// binaries from an external mirror at runtime (supply-chain surface).
+// Explicit `officecli install` remains available for dev machines.
 
 var rootCommand = OfficeCli.CommandBuilder.BuildRootCommand();
 

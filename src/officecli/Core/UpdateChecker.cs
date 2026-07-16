@@ -45,6 +45,14 @@ internal static class UpdateChecker
     /// </summary>
     internal static void CheckInBackground()
     {
+        // GALAXY FORK: background self-update is permanently disabled. The
+        // binary is version-pinned and rolled out only through the Galaxy
+        // CI/compose pipeline; a long-lived container must never swap its
+        // own binary from an external mirror. Explicit `officecli upgrade`
+        // style commands still work for dev machines.
+        return;
+
+#pragma warning disable CS0162 // unreachable — kept for minimal upstream-sync diff
         // Best-effort: SaveConfig falls back to $TMPDIR inside containers when
         // home is read-only, so a CreateDirectory failure here is not fatal.
         try { Directory.CreateDirectory(ConfigDir); } catch { /* continue */ }
@@ -84,6 +92,7 @@ internal static class UpdateChecker
             if (!SaveConfig(config)) return;
             SpawnRefreshProcess();
         }
+#pragma warning restore CS0162
     }
 
     /// <summary>

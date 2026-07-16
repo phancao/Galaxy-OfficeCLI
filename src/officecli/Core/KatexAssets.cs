@@ -23,7 +23,14 @@ internal static class KatexAssets
 {
     public const string Version = "0.16.11";
 
-    private const string MirrorBase = "https://d.officecli.ai/assets/katex-" + Version;
+    // GALAXY FORK: never reference the upstream project's mirror. The mirror
+    // slot is filled from OFFICECLI_ASSET_MIRROR_BASE (a Galaxy-hosted static
+    // prefix serving the katex-<version>/ dist subtree); when unset the public
+    // CDN serves both slots, so generated HTML carries no third-party-VPS URL.
+    private static readonly string MirrorBase =
+        Environment.GetEnvironmentVariable("OFFICECLI_ASSET_MIRROR_BASE") is { Length: > 0 } b
+            ? b.TrimEnd('/') + "/katex-" + Version
+            : "https://cdn.jsdelivr.net/npm/katex@" + Version + "/dist";
     private const string CdnBase = "https://cdn.jsdelivr.net/npm/katex@" + Version + "/dist";
 
     public static string CssUrl => MirrorBase + "/katex.min.css";
