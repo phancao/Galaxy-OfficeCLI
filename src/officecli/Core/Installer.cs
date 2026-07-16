@@ -184,6 +184,13 @@ internal static class Installer
     /// </summary>
     internal static void MaybeAutoInstall(string[] args)
     {
+        // GALAXY FORK: implicit self-install (copying the running binary into
+        // ~/.local/bin plus skill/MCP setup) is permanently disabled. Install
+        // is an explicit `officecli install` action only; containers run the
+        // binary from its deployed path.
+        return;
+
+#pragma warning disable CS0162 // unreachable — kept for minimal upstream-sync diff
         try
         {
             // Opt-out
@@ -242,6 +249,7 @@ internal static class Installer
             InstallBinary(quiet: true);
         }
         catch { /* never block the user's command */ }
+#pragma warning restore CS0162
     }
 
     private static string? ReadVersionFromBinary(string path)

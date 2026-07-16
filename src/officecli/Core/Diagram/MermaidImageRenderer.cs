@@ -48,10 +48,13 @@ public static class MermaidImageRenderer
 {
     // Pin a major version so cache + mirror + CDN agree and rendering is stable.
     private const string MermaidVersion = "11";
-    // Own mirror first (offline-first, no third-party dependency at steady state),
-    // then the public CDN as a fallback.
-    private const string MirrorUrl =
-        "https://d.officecli.ai/assets/mermaid-" + MermaidVersion + ".min.js";
+    // GALAXY FORK: mirror slot comes from OFFICECLI_ASSET_MIRROR_BASE (Galaxy
+    // static host) instead of the upstream project's VPS; unset → public CDN
+    // fills both slots.
+    private static readonly string MirrorUrl =
+        Environment.GetEnvironmentVariable("OFFICECLI_ASSET_MIRROR_BASE") is { Length: > 0 } b
+            ? b.TrimEnd('/') + "/mermaid-" + MermaidVersion + ".min.js"
+            : "https://cdn.jsdelivr.net/npm/mermaid@" + MermaidVersion + "/dist/mermaid.min.js";
     private const string CdnUrl =
         "https://cdn.jsdelivr.net/npm/mermaid@" + MermaidVersion + "/dist/mermaid.min.js";
 

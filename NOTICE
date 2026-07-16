@@ -11,3 +11,13 @@ This NOTICE file is part of the required attribution under
 Section 4 of the Apache License, Version 2.0. Redistributions
 of this work, with or without modification, must retain this
 notice.
+
+--------------------------------------------------------------------------------
+Modifications for the Galaxy Vortex platform
+Copyright 2026 Galaxy Holdings
+
+This distribution (the "Galaxy fork", github.com/phancao/Galaxy-OfficeCLI)
+contains modifications to the original OfficeCLI: background self-update,
+implicit self-install, and upstream asset-mirror references are removed or
+made deployment-configurable. See GALAXY-FORK.md for the full delta.
+These modifications are likewise licensed under the Apache License 2.0.
