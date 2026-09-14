@@ -1,0 +1,10 @@
+# Kết quả biên dịch của .NET. Repo này chưa từng có .gitignore, nên 110MB
+# bin/obj vẫn nằm ngay trong cây nguồn và chỉ cách `git add -A` đúng một bước.
+bin/
+obj/
+
+# Tệp người dùng của Visual Studio / Rider
+*.user
+*.suo
+.vs/
+.idea/
